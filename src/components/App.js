@@ -1,41 +1,41 @@
 
-import React ,{useState} from "react";
+import React, { useState } from "react";
 import './../styles/App.css';
 
 const App = () => {
+  let [todos,setTodos]=useState([])
+  let [newTodo,setNewTodo]=useState('')
 
-  const[input,setInput]=useState('');
-  const[tasks,setTasks]=useState([]);
-
-  console.log('input: ',input);
-  console.log('tasks: ',tasks);
-  function add(){
-    setTasks([...tasks,input]);
+  function addTodo(){
+    if(newTodo.trim()!==''){
+      setTodos([...todos,newTodo]);
+      setNewTodo('');
+    }
   }
 
-  function deleteTask(task){
-     setTasks(tasks.filter((t)=>{
-          if(t!==task) return t;
-     }))
+  function removeTodo(i){
+    let updatedTodos=todos.filter((element,index)=>{
+      return i!==index;
+    })
+    setTodos(updatedTodos)
   }
-
 
   return (
-    <div style={{textAlign:'center'}}>
+    <div className="main">
         {/* Do not remove the main div */}
-        <p>To-Do List</p>
-         <div>
-          <input type='text'  value={input} onChange={(e)=>setInput(e.target.value)}/>
-          <button onClick={add}>Add Todo</button>
-         </div>
-         <ul>
-           {tasks.length>0 && tasks.map((task,index)=>{
-            return <li style={{display:'flex',justifyContent:'space-between'}} key={index}>
-             <span>{task}</span>
-             <button onClick={()=>deleteTask(task)}>Delete</button>
+        <h1>To-D0 List</h1>
+        <input type="text" value={newTodo} onChange={(e)=>setNewTodo(e.target.value)}  />
+        <button onClick={addTodo}>Add Todo</button>
+        <ul>
+        {
+          todos.map((element,index)=>(
+            <li key={index}>
+              <div>{element}</div>
+              <button onClick={()=>removeTodo(index)}></button>
             </li>
-           })}
-         </ul>
+          ))
+        }
+        </ul>
     </div>
   )
 }
